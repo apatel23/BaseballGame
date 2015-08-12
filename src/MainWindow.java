@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,13 +31,13 @@ public class MainWindow implements ActionListener {
 	private static JPanel jp;
 	private static JMenuBar jb;
 	private static FileReader fr;
-	private static ArrayList<Integer> points;
 	private static Graphics g;
 	private static BufferedImage img;
 	private static JLabel background;
+	private static JLabel pitch;
 	
 	MainWindow() {
-		points = new ArrayList<Integer>();
+
 	}
 	
 	
@@ -53,10 +54,34 @@ public class MainWindow implements ActionListener {
 	
 	public static JPanel makeTopContainerPanel() {
 		jp = new JPanel();
-		loadImage();
+		loadBackgroundImage();
 		BorderLayout gl = new BorderLayout();
 		jp.setLayout(gl);
-		jp.add(background);
+		jp.add(background, BorderLayout.CENTER);
+		
+		JButton start = new JButton("Start");
+		start.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				loadPitchImage();
+				jp.add(pitch, BorderLayout.CENTER);
+				jp.revalidate();
+				jp.paintImmediately(0, 0, 600, 600);
+				System.out.println("Start game");
+			}	
+		});
+		
+		JButton swing = new JButton("Swing");
+		swing.setSize(100, 50);
+		swing.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Swing!");
+			}
+		});
+		
+		jp.add(swing, BorderLayout.SOUTH);
+		jp.add(start, BorderLayout.NORTH);
 		jp.setVisible(true);
 		return jp;
 	}
@@ -78,7 +103,7 @@ public class MainWindow implements ActionListener {
 		jf.setJMenuBar(jb);
 	}
 	
-	public static void loadImage() {
+	public static void loadBackgroundImage() {
 		try {
 			img = ImageIO.read(new File("src/Field.jpg"));
 			background = new JLabel(new ImageIcon(img));
@@ -87,20 +112,19 @@ public class MainWindow implements ActionListener {
 		}
 	}
 	
-	public static void drawPoints(ArrayList<Integer> points) {
-		points = fr.getPoints();
-		int j = 10;
-		for(Integer i : points) {
-			System.out.println(" : " + i);
-			//g.drawOval(j, i, 5, 5);
+	public static void loadPitchImage() {
+		try {
+			img = ImageIO.read(new File("src/Pitch.jpg"));
+			pitch = new JLabel(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
-
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 
 	
@@ -108,8 +132,6 @@ public class MainWindow implements ActionListener {
 	
 	
 	public static void main(String[] args) {
-		fr = new FileReader("points.txt");
-		drawPoints(points);
 		makeFrame();
 	}
 
