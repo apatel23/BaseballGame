@@ -28,50 +28,76 @@ import javax.swing.border.Border;
 public class MainWindow implements ActionListener {
 	
 	private static JFrame jf;
-	private static JPanel jp;
+	private static JDialog jd;
 	private static JMenuBar jb;
-	private static FileReader fr;
-	private static Graphics g;
 	private static BufferedImage img;
 	private static JLabel background;
 	private static JLabel pitch;
 	
+	private static Boolean pitched = false;
+	
+	
+	
 	MainWindow() {
-
+		splashScreen();
 	}
 	
 	
-	public static JFrame makeFrame() {
-		jf = new JFrame();
-		createMenuBar();
-		makeTopContainerPanel();
-		jf.setContentPane(jp);
-		jf.setSize(600, 600);
-		jf.setTitle("Let's Play Ball!");
-		jf.setVisible(true);
-		return jf;
-	}
-	
-	public static JPanel makeTopContainerPanel() {
-		jp = new JPanel();
-		loadBackgroundImage();
-		BorderLayout gl = new BorderLayout();
-		jp.setLayout(gl);
-		jp.add(background, BorderLayout.CENTER);
+	public static void splashScreen() {
+		jd = new JDialog();
+		jd.setSize(200, 100);
+		jd.setTitle("New Game");
+		jd.setLocationRelativeTo(null);
 		
 		JButton start = new JButton("Start");
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				loadPitchImage();
-				jp.add(pitch, BorderLayout.CENTER);
-				jp.revalidate();
-				jp.paintImmediately(0, 0, 600, 600);
+				NewGame();
 				System.out.println("Start game");
 			}	
 		});
 		
+		JButton close = new JButton("Exit");
+		close.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		
+		JPanel jdp = new JPanel();
+		BorderLayout bl = new BorderLayout();
+		jdp.setLayout(bl);
+		jd.add(start, BorderLayout.NORTH);
+		jd.add(close, BorderLayout.SOUTH);
+		jd.setVisible(true);
+	}
+	
+	public static JFrame NewGame() {
+		
+		// Close Dialog
+		jd.dispose();
+		
+		JPanel jp = new JPanel();
+		loadPitchImage();
+		BorderLayout gl = new BorderLayout();
+		
+		jp.setLayout(gl);
+		jp.add(pitch, BorderLayout.CENTER);
+		jp.setVisible(true);
+		
+		jf = new JFrame();
+		createMenuBar();
+		jf.setContentPane(jp);
+		jf.setSize(600, 600);
+		jf.setTitle("Let's Play Ball!");
+		jf.setLocationRelativeTo(null);
+		
 		JButton swing = new JButton("Swing");
+		if(!pitched) {
+			swing.setEnabled(false);
+		}
 		swing.setSize(100, 50);
 		swing.addActionListener(new ActionListener() {
 			@Override
@@ -81,10 +107,11 @@ public class MainWindow implements ActionListener {
 		});
 		
 		jp.add(swing, BorderLayout.SOUTH);
-		jp.add(start, BorderLayout.NORTH);
-		jp.setVisible(true);
-		return jp;
+		
+		jf.setVisible(true);
+		return jf;
 	}
+	
 	
 	public static void createMenuBar() {
 		jb = new JMenuBar();
@@ -132,7 +159,7 @@ public class MainWindow implements ActionListener {
 	
 	
 	public static void main(String[] args) {
-		makeFrame();
+		MainWindow mw = new MainWindow();
 	}
 
 
