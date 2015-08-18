@@ -94,6 +94,17 @@ public class MainWindow implements ActionListener {
 		jf.setTitle("Let's Play Ball!");
 		jf.setLocationRelativeTo(null);
 		
+		JButton throwPitch = new JButton("Throw Pitch");
+		throwPitch.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Throw pitch
+				System.out.println("Throw Pitch");
+				Ball pitchBall = new Ball();
+				jp.add(pitchBall);
+			}
+		});
+		
 		JButton swing = new JButton("Swing");
 		if(!pitched) {
 			swing.setEnabled(false);
@@ -106,6 +117,7 @@ public class MainWindow implements ActionListener {
 			}
 		});
 		
+		jp.add(throwPitch, BorderLayout.NORTH);
 		jp.add(swing, BorderLayout.SOUTH);
 		
 		jf.setVisible(true);
@@ -147,6 +159,8 @@ public class MainWindow implements ActionListener {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 	
 	@Override
