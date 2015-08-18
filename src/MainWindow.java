@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Menu;
@@ -35,6 +36,7 @@ public class MainWindow implements ActionListener {
 	private static JLabel pitch;
 	
 	private static Boolean pitched = false;
+	private static Boolean swung = false;
 	
 	
 	
@@ -94,17 +96,6 @@ public class MainWindow implements ActionListener {
 		jf.setTitle("Let's Play Ball!");
 		jf.setLocationRelativeTo(null);
 		
-		JButton throwPitch = new JButton("Throw Pitch");
-		throwPitch.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Throw pitch
-				System.out.println("Throw Pitch");
-				Ball pitchBall = new Ball();
-				jp.add(pitchBall);
-			}
-		});
-		
 		JButton swing = new JButton("Swing");
 		if(!pitched) {
 			swing.setEnabled(false);
@@ -114,8 +105,25 @@ public class MainWindow implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Swing!");
+				swung = true;
+				swing.setEnabled(false);
 			}
 		});
+		
+		JButton throwPitch = new JButton("Throw Pitch");
+		throwPitch.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Throw pitch
+				System.out.println("Throw Pitch");
+				Ball pitchBall = new Ball();
+				jp.add(pitchBall);
+				swing.setEnabled(true);
+				throwPitch.setEnabled(false);
+			}
+		});
+		
+		
 		
 		jp.add(throwPitch, BorderLayout.NORTH);
 		jp.add(swing, BorderLayout.SOUTH);
@@ -167,8 +175,6 @@ public class MainWindow implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub	
 	}
-
-	
 	
 	
 	
